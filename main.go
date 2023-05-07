@@ -154,7 +154,7 @@ func main() {
 	}
 
 	uiEvents := ui.PollEvents()
-	ticker := time.NewTicker(150 * time.Millisecond).C
+	ticker := time.NewTicker(250 * time.Millisecond).C
 	for {
 		select {
 		case e := <-uiEvents:
@@ -197,7 +197,7 @@ func main() {
 			DiskUsedInGB := toGB(diskInfo.Used)
 			//Update Processes
 			processes, usage := getProcInfos(CPUInfoStat[0].Cores)
-			PROCESSList.Title = fmt.Sprintf("Current CPU usage %.2f %s", usage, "%")
+			PROCESSList.Title = fmt.Sprintf("Total CPU usage %.2f %s", usage, "%")
 			//Update Values
 			RAMPiChart.Data = []float64{RamUsedInPercent, 100 - RamUsedInPercent}
 			DISKPiChart.Data = []float64{float64(DiskUsedInGB), float64((toGB(diskInfo.Total)) - DiskUsedInGB)}
