@@ -1,4 +1,4 @@
 # SysInf
  Simple SysInfo tool written in Go
- using [TermUI](github.com/gizak/termui/) and [gopsutil](github.com/shirou/gopsutil/)
-![](https://i.imgur.com/Og9NaU5.png)
+ using [TermUI](https://github.com/gizak/termui/) and [gopsutil](https://github.com/shirou/gopsutil/)
+![](https://i.imgur.com/738gV5c.png)
