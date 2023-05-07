@@ -174,6 +174,7 @@ func main() {
 					PROCESSList.SelectedRow++
 				}
 			case "q", "<C-c>":
+				ui.Clear()
 				return
 			case "<Resize>":
 				//Resize widgets
