@@ -98,7 +98,7 @@ func main() {
 		diskPath = "\\"
 	}
 	//Widget Inits
-	CPUINfo := widgets.NewParagraph()
+	CPUInfo := widgets.NewParagraph()
 	QUITBox := widgets.NewParagraph()
 	PROCESSList := widgets.NewList()
 	HOSTInfo := widgets.NewParagraph()
@@ -132,9 +132,9 @@ func main() {
 		HOSTInfoStat.KernelVersion,
 		HOSTInfoStat.Procs)
 	//CPU
-	CPUINfo.SetRect(0, h/3, w/2, h/2)
-	CPUINfo.Title = "CPU Stats"
-	CPUINfo.Text = fmt.Sprintf("Model: %s\nCore: %d\nMHz: %.2f\n",
+	CPUInfo.SetRect(0, h/3, w/2, h/2)
+	CPUInfo.Title = "CPU Stats"
+	CPUInfo.Text = fmt.Sprintf("Model: %s\nCore: %d\nMHz: %.2f\n",
 		CPUInfoStat[0].ModelName,
 		CPUInfoStat[0].Cores,
 		CPUInfoStat[0].Mhz)
@@ -181,7 +181,7 @@ func main() {
 				payload := e.Payload.(ui.Resize)
 				RAMPiChart.SetRect(0, 0, payload.Width/2, payload.Height/3)
 				DISKPiChart.SetRect(payload.Width/2, 0, payload.Width, payload.Height/3)
-				CPUINfo.SetRect(0, payload.Height/3, payload.Width/2, payload.Height/2)
+				CPUInfo.SetRect(0, payload.Height/3, payload.Width/2, payload.Height/2)
 				HOSTInfo.SetRect(payload.Width/2, payload.Height/3, payload.Width, payload.Height/2)
 				PROCESSList.SetRect(0, payload.Height/2, payload.Width, payload.Height)
 				QUITBox.SetRect(0, payload.Height-3, payload.Width, payload.Height)
@@ -204,7 +204,7 @@ func main() {
 			DISKPiChart.Data = []float64{float64(DiskUsedInGB), float64((toGB(diskInfo.Total)) - DiskUsedInGB)}
 			PROCESSList.Rows = processes
 			ui.Clear()
-			ui.Render(RAMPiChart, DISKPiChart, CPUINfo, HOSTInfo, PROCESSList, QUITBox)
+			ui.Render(RAMPiChart, DISKPiChart, CPUInfo, HOSTInfo, PROCESSList, QUITBox)
 		}
 	}
 }
