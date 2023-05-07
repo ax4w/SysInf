@@ -26,7 +26,10 @@ func main() {
 	}
 
 	//Host
-	HOSTInfoStat, _ := host.Info()
+	HOSTInfoStat, err := host.Info()
+	if err != nil {
+		log.Fatalf("Could not retrieve host info")
+	}
 	HOSTInfo := widgets.NewParagraph()
 	HOSTInfo.SetRect(70, 20, 36, 27)
 	HOSTInfo.Title = "Host Info"
@@ -37,7 +40,10 @@ func main() {
 		HOSTInfoStat.KernelVersion,
 		HOSTInfoStat.Procs)
 	//CPU
-	CPUInfoStat, _ := cpu.Info()
+	CPUInfoStat, err := cpu.Info()
+	if err != nil {
+		log.Fatalf("Could not retrieve host info")
+	}
 	CPUINfo := widgets.NewParagraph()
 	CPUINfo.SetRect(0, 20, 36, 27)
 	CPUINfo.Title = "CPU Stats"
@@ -69,8 +75,11 @@ func main() {
 	uiEvents := ui.PollEvents()
 	ticker := time.NewTicker(time.Second).C
 	for {
-		virtualMemInfo, _ := mem.VirtualMemory()
-		diskInfo, _ := disk.Usage(diskPath)
+		virtualMemInfo, err := mem.VirtualMemory()
+		diskInfo, err := disk.Usage(diskPath)
+		if err != nil {
+			log.Fatalf("Could not retrieve host info")
+		}
 		RamUsedInPercent := 10 + ((100 / float64(virtualMemInfo.Total)) * float64(virtualMemInfo.Used))
 		DiskUsedInGB := diskInfo.Used / 1024 / 1024 / 1024
 		RAMData[0] = RamUsedInPercent
