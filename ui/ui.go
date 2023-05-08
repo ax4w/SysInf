@@ -39,7 +39,7 @@ func update() {
 	RamUsedInPercent := 10 + ((100 / float64(virtualMemInfo.Total)) * float64(virtualMemInfo.Used))
 	DiskUsedInGB := process.ToGB(diskInfo.Used)
 	//Update Processes
-	processes := process.ProcessInfo()
+	processes := process.Info()
 	widgets.CpuCoresGraph.Labels = cpu.Labels()
 	widgets.CpuCoresGraph.Title = fmt.Sprintf("Total CPU usage by user %.2f %s", cpu.Usage()[0], "%")
 	widgets.CpuCoresGraph.Data = cpu.CoresUsage()

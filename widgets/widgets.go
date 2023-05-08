@@ -35,6 +35,19 @@ func BuildWidgets() {
 	CpuCoresGraph.BarWidth = (w - (w)/int(cpu.Count())) / int(cpu.Count())
 	CpuCoresGraph.NumFormatter = cpu.ChartFormat
 	CpuCoresGraph.MaxVal = 100.0
+	CpuCoresGraph.BarColors = []ui.Color{ui.ColorGreen, ui.ColorGreen}
+	CpuCoresGraph.NumStyles = []ui.Style{{
+		Fg: ui.ColorBlack,
+	}, {
+		Fg: ui.ColorBlack,
+	}}
+	CpuCoresGraph.LabelStyles = []ui.Style{{
+		Fg: ui.ColorWhite,
+		Bg: ui.ColorClear,
+	}, {
+		Fg: ui.ColorWhite,
+		Bg: ui.ColorClear,
+	}}
 	//Processes
 	ProcessList.Title = "Processes"
 	ProcessList.WrapText = false

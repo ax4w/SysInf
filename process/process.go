@@ -61,7 +61,7 @@ func SortedProcesses() []ProcInf {
 	return procInfos
 }
 
-func ProcessInfo() []string {
+func Info() []string {
 	var processes []string
 	procInfos := SortedProcesses()
 	for _, p := range procInfos {
