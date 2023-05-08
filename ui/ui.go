@@ -26,7 +26,7 @@ func resize(payload tui.Resize) {
 	widgets.ProcessList.SetRect(0, payload.Height/2, payload.Width, payload.Height)
 	widgets.ControlsBox.SetRect(0, payload.Height-3, payload.Width, payload.Height)
 	widgets.CpuCoresGraph.SetRect(0, payload.Height/3, payload.Width, payload.Height/2)
-	widgets.CpuCoresGraph.BarWidth = (payload.Width - 8) / int(cpu.Count())
+	widgets.CpuCoresGraph.BarWidth = payload.Width / int(cpu.Count()*2)
 
 }
 
@@ -58,7 +58,7 @@ func update() {
 
 func Run() {
 	//overwrite shading blocks for the pi charts
-	tui.SHADED_BLOCKS = [...]rune{'▒', '█', ' ', ' ', ' '}
+	//tui.SHADED_BLOCKS = [...]rune{'▒', '█', ' ', ' ', ' '}
 	uiEvents := tui.PollEvents()
 	ticker := time.NewTicker(refreshDelay * time.Millisecond).C
 
