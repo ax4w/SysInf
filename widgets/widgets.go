@@ -30,7 +30,7 @@ func InitWidgets() {
 
 func BuildWidgets() {
 	w, h := tui.TerminalDimensions()
-	//Quit Box
+	//Controls Box
 	ControlsBox.SetRect(0, h-3, w, h)
 	ControlsBox.Title = "Controls"
 	text := "General: q - quit, Processes: w - up, s - down, k - kill"

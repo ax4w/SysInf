@@ -72,18 +72,21 @@ func Run() {
 			switch e.ID {
 			case "r":
 				if !widgets.IsWindows() {
-					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
+					t := strings.TrimSpace(strings.
+						Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 					parsed, _ := strconv.ParseInt(t, 10, 32)
 					process.ResumeProcess(int32(parsed))
 				}
 			case "p":
 				if !widgets.IsWindows() {
-					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
+					t := strings.TrimSpace(strings.
+						Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 					parsed, _ := strconv.ParseInt(t, 10, 32)
 					process.SuspendProcess(int32(parsed))
 				}
 			case "k":
-				t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
+				t := strings.TrimSpace(strings.
+					Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 				parsed, _ := strconv.ParseInt(t, 10, 32)
 				process.KillProcess(int32(parsed))
 
@@ -106,7 +109,8 @@ func Run() {
 			//needs to be polled frequently
 			update()
 			tui.Clear()
-			tui.Render(widgets.RamPiChart, widgets.DiskPiChart, widgets.CpuCoresGraph, widgets.ProcessList, widgets.ControlsBox)
+			tui.Render(widgets.RamPiChart, widgets.DiskPiChart,
+				widgets.CpuCoresGraph, widgets.ProcessList, widgets.ControlsBox)
 		}
 	}
 }
