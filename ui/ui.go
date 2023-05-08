@@ -63,7 +63,7 @@ func Run() {
 	ticker := time.NewTicker(refreshDelay * time.Millisecond).C
 
 	diskPath = "/"
-	if !widgets.IsNotWindows() {
+	if widgets.IsWindows() {
 		diskPath = "\\"
 	}
 	for {
@@ -71,13 +71,13 @@ func Run() {
 		case e := <-uiEvents:
 			switch e.ID {
 			case "r":
-				if widgets.IsNotWindows() {
+				if !widgets.IsWindows() {
 					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 					parsed, _ := strconv.ParseInt(t, 10, 32)
 					process.ResumeProcess(int32(parsed))
 				}
 			case "p":
-				if widgets.IsNotWindows() {
+				if !widgets.IsWindows() {
 					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 					parsed, _ := strconv.ParseInt(t, 10, 32)
 					process.SuspendProcess(int32(parsed))

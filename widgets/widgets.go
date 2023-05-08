@@ -16,8 +16,8 @@ var (
 	CpuCoresGraph *widgets.BarChart
 )
 
-func IsNotWindows() bool {
-	return !(runtime.GOOS == "windows")
+func IsWindows() bool {
+	return runtime.GOOS == "windows"
 }
 
 func InitWidgets() {
@@ -34,7 +34,7 @@ func BuildWidgets() {
 	ControlsBox.SetRect(0, h-3, w, h)
 	ControlsBox.Title = "Controls"
 	text := "General: q - quit, Processes: w - up, s - down, k - kill"
-	if IsNotWindows() {
+	if !IsWindows() {
 		text += ", p - pause, r resume"
 	}
 	ControlsBox.Text = text
