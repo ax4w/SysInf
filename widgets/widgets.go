@@ -3,8 +3,9 @@ package widgets
 import (
 	"SysInf/cpu"
 	"fmt"
-	ui "github.com/gizak/termui/v3"
+	tui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
+	"runtime"
 )
 
 var (
@@ -15,6 +16,10 @@ var (
 	CpuCoresGraph *widgets.BarChart
 )
 
+func IsNotWindows() bool {
+	return !(runtime.GOOS == "windows")
+}
+
 func InitWidgets() {
 	ControlsBox = widgets.NewParagraph()
 	ProcessList = widgets.NewList()
@@ -24,41 +29,45 @@ func InitWidgets() {
 }
 
 func BuildWidgets() {
-	w, h := ui.TerminalDimensions()
+	w, h := tui.TerminalDimensions()
 	//Quit Box
 	ControlsBox.SetRect(0, h-3, w, h)
 	ControlsBox.Title = "Controls"
-	ControlsBox.Text = "General: q - quit, Processes: w - up, s - down, k - kill"
-	ControlsBox.TextStyle = ui.Style{Fg: ui.ColorRed, Bg: ui.ColorClear}
+	text := "General: q - quit, Processes: w - up, s - down, k - kill"
+	if IsNotWindows() {
+		text += ", p - pause, r resume"
+	}
+	ControlsBox.Text = text
+	ControlsBox.TextStyle = tui.Style{Fg: tui.ColorGreen, Bg: tui.ColorClear}
 	//CPU Graph
 	CpuCoresGraph.SetRect(0, h/3, w, (h/2)+5)
 	CpuCoresGraph.BarWidth = (w - (w)/int(cpu.Count())) / int(cpu.Count())
 	CpuCoresGraph.NumFormatter = cpu.ChartFormat
 	CpuCoresGraph.MaxVal = 100.0
-	CpuCoresGraph.BarColors = []ui.Color{ui.ColorGreen, ui.ColorGreen}
-	CpuCoresGraph.NumStyles = []ui.Style{{
-		Fg: ui.ColorBlack,
+	CpuCoresGraph.BarColors = []tui.Color{tui.ColorGreen, tui.ColorGreen}
+	CpuCoresGraph.NumStyles = []tui.Style{{
+		Fg: tui.ColorBlack,
 	}, {
-		Fg: ui.ColorBlack,
+		Fg: tui.ColorBlack,
 	}}
-	CpuCoresGraph.LabelStyles = []ui.Style{{
-		Fg: ui.ColorWhite,
-		Bg: ui.ColorClear,
+	CpuCoresGraph.LabelStyles = []tui.Style{{
+		Fg: tui.ColorWhite,
+		Bg: tui.ColorClear,
 	}, {
-		Fg: ui.ColorWhite,
-		Bg: ui.ColorClear,
+		Fg: tui.ColorWhite,
+		Bg: tui.ColorClear,
 	}}
 	//Processes
 	ProcessList.Title = "Processes"
 	ProcessList.WrapText = false
-	ProcessList.SelectedRowStyle = ui.Style{Fg: ui.ColorGreen, Bg: ui.ColorClear}
+	ProcessList.SelectedRowStyle = tui.Style{Fg: tui.ColorGreen, Bg: tui.ColorClear}
 	ProcessList.SetRect(0, (h/2)+5, w, h-3)
 
 	//RAM
 	RamPiChart.SetRect(0, 0, w/2, h/3)
 	RamPiChart.Title = "RAM usage"
 	RamPiChart.LabelFormatter = func(i int, v float64) string {
-		return fmt.Sprintf("%.02f %s", v, "%")
+		return fmt.Sprintf("%.02f%s", v, "%")
 	}
 
 	//Disk

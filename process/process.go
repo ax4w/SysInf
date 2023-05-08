@@ -30,18 +30,37 @@ func ToGB(val uint64) uint64 {
 	return val / 1024 / 1024 / 1024
 }
 
-func KillProcessByID(id int32) {
+func processByID(id int32) *process.Process {
 	PROCESSInfoStat, err := process.Processes()
 	if err != nil {
 		log.Fatalf("Could not retrieve host info")
 	}
 	for _, p := range PROCESSInfoStat {
 		if p.Pid == id {
-			err := p.Kill()
-			if err != nil {
-				return
-			}
+			return p
 		}
+	}
+	return nil
+}
+
+func ResumeProcess(id int32) {
+	err := processByID(id).Resume()
+	if err != nil {
+		return
+	}
+}
+
+func SuspendProcess(id int32) {
+	err := processByID(id).Suspend()
+	if err != nil {
+		return
+	}
+}
+
+func KillProcess(id int32) {
+	err := processByID(id).Terminate()
+	if err != nil {
+		return
 	}
 }
 

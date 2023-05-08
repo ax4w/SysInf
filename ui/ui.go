@@ -5,11 +5,10 @@ import (
 	"SysInf/process"
 	"SysInf/widgets"
 	"fmt"
-	ui "github.com/gizak/termui/v3"
+	tui "github.com/gizak/termui/v3"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/mem"
 	"log"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -17,9 +16,11 @@ import (
 
 const refreshDelay = 250
 
+var startTimeStamp = time.Now().UTC().UnixMilli()
+
 var diskPath string
 
-func resize(payload ui.Resize) {
+func resize(payload tui.Resize) {
 	widgets.RamPiChart.SetRect(0, 0, payload.Width/2, payload.Height/3)
 	widgets.DiskPiChart.SetRect(payload.Width/2, 0, payload.Width, payload.Height/3)
 	widgets.ProcessList.SetRect(0, payload.Height/2, payload.Width, payload.Height)
@@ -40,9 +41,14 @@ func update() {
 	DiskUsedInGB := process.ToGB(diskInfo.Used)
 	//Update Processes
 	processes := process.Info()
-	widgets.CpuCoresGraph.Labels = cpu.Labels()
-	widgets.CpuCoresGraph.Title = fmt.Sprintf("Total CPU usage by user %.2f %s", cpu.Usage()[0], "%")
-	widgets.CpuCoresGraph.Data = cpu.CoresUsage()
+	//CPU stats don't need to be updated every 250 milliseconds
+	if time.Now().UTC().UnixMilli()-startTimeStamp > 1000 {
+		startTimeStamp = time.Now().UTC().UnixMilli()
+		widgets.CpuCoresGraph.Labels = cpu.Labels()
+		widgets.CpuCoresGraph.Title = fmt.Sprintf("Total CPU usage by user %.2f %s", cpu.Usage()[0], "%")
+		widgets.CpuCoresGraph.Data = cpu.CoresUsage()
+	}
+
 	widgets.ProcessList.Title = fmt.Sprintf("Processes - %d running", len(process.SortedProcesses()))
 	//Update Values
 	widgets.RamPiChart.Data = []float64{RamUsedInPercent, 100 - RamUsedInPercent}
@@ -51,23 +57,35 @@ func update() {
 }
 
 func Run() {
-
-	uiEvents := ui.PollEvents()
+	//overwrite shading blocks for the pi charts
+	tui.SHADED_BLOCKS = [...]rune{'▒', '█', ' ', ' ', ' '}
+	uiEvents := tui.PollEvents()
 	ticker := time.NewTicker(refreshDelay * time.Millisecond).C
 
 	diskPath = "/"
-	if runtime.GOOS == "windows" {
+	if !widgets.IsNotWindows() {
 		diskPath = "\\"
 	}
 	for {
 		select {
 		case e := <-uiEvents:
 			switch e.ID {
+			case "r":
+				if widgets.IsNotWindows() {
+					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
+					parsed, _ := strconv.ParseInt(t, 10, 32)
+					process.ResumeProcess(int32(parsed))
+				}
+			case "p":
+				if widgets.IsNotWindows() {
+					t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
+					parsed, _ := strconv.ParseInt(t, 10, 32)
+					process.SuspendProcess(int32(parsed))
+				}
 			case "k":
-
 				t := strings.TrimSpace(strings.Split(widgets.ProcessList.Rows[widgets.ProcessList.SelectedRow], "|")[0])
 				parsed, _ := strconv.ParseInt(t, 10, 32)
-				process.KillProcessByID(int32(parsed))
+				process.KillProcess(int32(parsed))
 
 			case "w":
 				if widgets.ProcessList.SelectedRow > 0 {
@@ -78,16 +96,17 @@ func Run() {
 					widgets.ProcessList.SelectedRow++
 				}
 			case "q", "<C-c>":
-				ui.Clear()
+				tui.Clear()
 				return
 			case "<Resize>":
-				resize(e.Payload.(ui.Resize))
+				resize(e.Payload.(tui.Resize))
+
 			}
 		case <-ticker:
 			//needs to be polled frequently
 			update()
-			ui.Clear()
-			ui.Render(widgets.RamPiChart, widgets.DiskPiChart, widgets.CpuCoresGraph, widgets.ProcessList, widgets.ControlsBox)
+			tui.Clear()
+			tui.Render(widgets.RamPiChart, widgets.DiskPiChart, widgets.CpuCoresGraph, widgets.ProcessList, widgets.ControlsBox)
 		}
 	}
 }
