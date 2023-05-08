@@ -41,7 +41,7 @@ func BuildWidgets() {
 	ControlsBox.TextStyle = tui.Style{Fg: tui.ColorGreen, Bg: tui.ColorClear}
 	//CPU Graph
 	CpuCoresGraph.SetRect(0, h/3, w, (h/2)+5)
-	CpuCoresGraph.BarWidth = (w - (w)/int(cpu.Count())) / int(cpu.Count())
+	CpuCoresGraph.BarWidth = (w - 5) / int(cpu.Count())
 	CpuCoresGraph.NumFormatter = cpu.ChartFormat
 	CpuCoresGraph.MaxVal = 100.0
 	CpuCoresGraph.BarColors = []tui.Color{tui.ColorGreen, tui.ColorGreen}
