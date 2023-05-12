@@ -1,0 +1,9 @@
+{
+  "general": {
+    "cpu_refresh_delay": 1000,
+    "ram_refresh_delay": 1000,
+    "disk_refresh_delay": 1000,
+    "process_refresh_delay": 250,
+    "ui_refresh_delay": 250
+  }
+}

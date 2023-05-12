@@ -1,19 +1,21 @@
 package main
 
 import (
-	ui2 "SysInf/ui"
-	"SysInf/widgets"
-	ui "github.com/gizak/termui/v3"
+	"SysInf/core/config"
+	ui "SysInf/ui"
+	"SysInf/ui/widgets"
+	tui "github.com/gizak/termui/v3"
 	"log"
 )
 
 func main() {
-	if err := ui.Init(); err != nil {
+	config.LoadConfig()
+	if err := tui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
-	defer ui.Close()
+	defer tui.Close()
 
 	widgets.InitWidgets()
 	widgets.BuildWidgets()
-	ui2.Run()
+	ui.Run()
 }

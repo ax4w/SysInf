@@ -1,7 +1,7 @@
 package widgets
 
 import (
-	"SysInf/cpu"
+	"SysInf/core/cpu"
 	"fmt"
 	tui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
@@ -41,7 +41,7 @@ func BuildWidgets() {
 	ControlsBox.TextStyle = tui.Style{Fg: tui.ColorGreen, Bg: tui.ColorClear}
 	//CPU Graph
 	CpuCoresGraph.SetRect(0, h/3, w, (h/2)+5)
-	CpuCoresGraph.BarWidth = w / int(cpu.Count()*2)
+	CpuCoresGraph.BarWidth = w / int(cpu.Count()+(cpu.Count()/3))
 	CpuCoresGraph.BarGap = 2
 	CpuCoresGraph.NumFormatter = cpu.ChartFormat
 	CpuCoresGraph.MaxVal = 100.0
