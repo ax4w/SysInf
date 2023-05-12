@@ -8,11 +8,12 @@ import (
 )
 
 type general struct {
-	CpuRefreshDelay     int64 `json:"cpu_refresh_delay"`
-	RamRefreshDelay     int64 `json:"ram_refresh_delay"`
-	DiskRefreshDelay    int64 `json:"disk_refresh_delay"`
-	ProcessRefreshDelay int64 `json:"process_refresh_delay"`
-	UIRefreshDelay      int64 `json:"ui_refresh_delay"`
+	CpuRefreshDelay     int64  `json:"cpu_refresh_delay"`
+	RamRefreshDelay     int64  `json:"ram_refresh_delay"`
+	DiskRefreshDelay    int64  `json:"disk_refresh_delay"`
+	ProcessRefreshDelay int64  `json:"process_refresh_delay"`
+	UIRefreshDelay      int64  `json:"ui_refresh_delay"`
+	DiskPath            string `json:"disk_path"`
 }
 
 type conf struct {

@@ -13,8 +13,7 @@ import (
 )
 
 var (
-	diskPath string
-	alive    = true
+	alive = true
 )
 
 func resize(payload tui.Resize) {
@@ -51,7 +50,7 @@ func ramRoutine() {
 }
 
 func diskRoutine() {
-	diskInfo, err := disk.Usage(diskPath)
+	diskInfo, err := disk.Usage(config.LoadedConfig.General.DiskPath)
 	if err != nil {
 		alive = false
 		panic("error retrieving disk info")

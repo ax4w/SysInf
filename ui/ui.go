@@ -14,10 +14,6 @@ func Run() {
 	uiEvents := tui.PollEvents()
 	ticker := time.NewTicker(time.Duration(config.LoadedConfig.General.UIRefreshDelay) * time.Millisecond).C
 	StartThreads()
-	diskPath = "/"
-	if widgets.IsWindows() {
-		diskPath = "\\"
-	}
 	for {
 		select {
 		case e := <-uiEvents:

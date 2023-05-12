@@ -1,6 +1,7 @@
 package widgets
 
 import (
+	"SysInf/core/config"
 	"SysInf/core/cpu"
 	"fmt"
 	tui "github.com/gizak/termui/v3"
@@ -72,7 +73,7 @@ func BuildWidgets() {
 	}
 
 	//Disk
-	DiskPiChart.Title = "Disk Space Used"
+	DiskPiChart.Title = "Disk Space Used for disk: " + config.LoadedConfig.General.DiskPath
 	DiskPiChart.SetRect(w/2, 0, w, h/3)
 	DiskPiChart.LabelFormatter = func(i int, v float64) string {
 		return fmt.Sprintf("%.02f GB", v)
