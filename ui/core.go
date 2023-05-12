@@ -43,7 +43,10 @@ func ramRoutine() {
 		panic("error retrieving memory info")
 	}
 	for alive {
+
 		RamUsedInPercent := 10 + ((100 / float64(virtualMemInfo.Total)) * float64(virtualMemInfo.Used))
+		widgets.RamPiChart.Title = fmt.Sprintf("Used≈ %dGB, Free≈ %dGB",
+			virtualMemInfo.Used/1024/1024/1024, (virtualMemInfo.Total-virtualMemInfo.Used)/1024/1024/1024)
 		widgets.RamPiChart.Data = []float64{RamUsedInPercent, 100 - RamUsedInPercent}
 		time.Sleep(time.Duration(config.LoadedConfig.General.RamRefreshDelay) * time.Millisecond)
 	}
